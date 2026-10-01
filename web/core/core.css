@@ -1364,7 +1364,7 @@ main::-webkit-scrollbar-thumb{
     color:#405568;
 
     font:
-        8px
+        11px
         var(--mono);
 
     letter-spacing:.8px;
@@ -1378,7 +1378,7 @@ main::-webkit-scrollbar-thumb{
 
     color:#a8bccb;
 
-    font-size:11px;
+    font-size:18px;
 
 }
 
@@ -1531,7 +1531,7 @@ main::-webkit-scrollbar-thumb{
     color:#607a8e;
 
     font:
-        9px
+        12px
         var(--mono);
 
 }
@@ -2318,12 +2318,30 @@ dialog .row .go{
 
     .activity-row{
 
-        grid-template-columns:
-            55px
-            8px
-            1fr;
+        display:grid;
 
-    }
+        grid-template-columns:
+            65px
+            10px
+            1fr
+            auto;
+
+        align-items:center;
+
+        gap:9px;
+
+        padding:
+            8px 0;
+
+        border-bottom:
+            1px solid
+            rgba(100,180,220,.06);
+
+        color:#71899c;
+
+        font-size:13px;
+
+}
 
 
     .activity-row b{

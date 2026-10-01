@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -31,11 +32,15 @@
 <aside>
 
     <div class="brand">
-        <span class="brand-mark">S</span>
+
+        <span class="brand-mark">
+            S
+        </span>
 
         <span class="brand-name">
             ServerGuard
         </span>
+
     </div>
 
 
@@ -58,8 +63,6 @@
     </div>
 
 
-    <!-- Навигация строится core.js -->
-
     <nav id="nav"></nav>
 
 
@@ -70,11 +73,19 @@
             <span class="status-pulse"></span>
 
             <div>
-                <b>Protection</b>
-                <small>ServerGuard Core</small>
+
+                <b>
+                    Protection
+                </b>
+
+                <small>
+                    ServerGuard Core
+                </small>
+
             </div>
 
         </div>
+
 
         <div class="version">
             SERVERGUARD // WEB
@@ -108,13 +119,9 @@
         data-module="overview"
     >
 
-
-        <!-- BACKGROUND EFFECTS -->
-
         <div class="world-noise"></div>
 
         <div class="world-grid"></div>
-
 
 
         <!-- ====================================================
@@ -129,14 +136,20 @@
                     SERVERGUARD NETWORK
                 </div>
 
-                <h1>
-                    Global
-                    <span>Protection</span>
+
+                <h1 id="serverTitle">
+
+                    Linux
+                    <span>Server</span>
+
                 </h1>
 
-                <p>
-                    Визуальный мониторинг защищённых
-                    Linux-серверов и соединений.
+
+                <p id="serverDescription">
+
+                    Подключение к Linux-серверу
+                    через защищённое SSH-соединение.
+
                 </p>
 
             </div>
@@ -144,11 +157,22 @@
 
             <div class="world-live">
 
-                <span class="live-dot"></span>
+                <span
+                    class="live-dot"
+                    id="serverLiveDot"
+                ></span>
+
 
                 <div>
-                    <b>NETWORK ONLINE</b>
-                    <small>Real-time monitoring</small>
+
+                    <b id="serverStatus">
+                        CONNECTING
+                    </b>
+
+                    <small id="serverStatusText">
+                        Получение данных...
+                    </small>
+
                 </div>
 
             </div>
@@ -163,45 +187,19 @@
 
         <div class="world-stage">
 
-
-            <!-- атмосфера -->
-
             <div class="planet-glow"></div>
 
-
-            <!-- canvas -->
 
             <canvas
                 id="worldCanvas"
             ></canvas>
 
-
-            <!-- центр -->
-
             <div class="planet-center">
-
                 <div class="planet-center-ring"></div>
-
-                <div class="planet-center-content">
-
-                    <span class="planet-label">
-                        SERVERGUARD
-                    </span>
-
-                    <strong>
-                        GLOBAL
-                    </strong>
-
-                    <small>
-                        PROTECTION NETWORK
-                    </small>
-
-                </div>
+            </div>
 
             </div>
 
-
-            <!-- hover information -->
 
             <div
                 class="node-tooltip"
@@ -210,13 +208,16 @@
 
                 <div class="tooltip-line"></div>
 
+
                 <span id="tooltipCity">
-                    Spain
+                    Server
                 </span>
+
 
                 <strong id="tooltipName">
                     ServerGuard Node
                 </strong>
+
 
                 <small id="tooltipStatus">
                     Protected
@@ -224,13 +225,12 @@
 
             </div>
 
-
         </div>
 
 
 
         <!-- ====================================================
-             BOTTOM STATS
+             SERVER STATISTICS
              ==================================================== -->
 
         <div class="network-strip">
@@ -241,11 +241,19 @@
                 <span class="network-icon online"></span>
 
                 <div>
-                    <small>NETWORK</small>
-                    <b>Operational</b>
+
+                    <small>
+                        CPU
+                    </small>
+
+                    <b id="statCpu">
+                        —
+                    </b>
+
                 </div>
 
             </div>
+
 
 
             <div class="network-item">
@@ -253,11 +261,19 @@
                 <span class="network-icon"></span>
 
                 <div>
-                    <small>ENCRYPTION</small>
-                    <b>SSH / Secure</b>
+
+                    <small>
+                        MEMORY
+                    </small>
+
+                    <b id="statMemory">
+                        —
+                    </b>
+
                 </div>
 
             </div>
+
 
 
             <div class="network-item">
@@ -265,11 +281,19 @@
                 <span class="network-icon"></span>
 
                 <div>
-                    <small>FIREWALL</small>
-                    <b>Active</b>
+
+                    <small>
+                        DISK
+                    </small>
+
+                    <b id="statDisk">
+                        —
+                    </b>
+
                 </div>
 
             </div>
+
 
 
             <div class="network-item">
@@ -277,11 +301,19 @@
                 <span class="network-icon"></span>
 
                 <div>
-                    <small>FILEGUARD</small>
-                    <b>Monitoring</b>
+
+                    <small>
+                        UPTIME
+                    </small>
+
+                    <b id="statUptime">
+                        —
+                    </b>
+
                 </div>
 
             </div>
+
 
 
             <div class="network-item">
@@ -289,8 +321,15 @@
                 <span class="network-icon"></span>
 
                 <div>
-                    <small>SSH HARDENING</small>
-                    <b>Enabled</b>
+
+                    <small>
+                        NETWORK
+                    </small>
+
+                    <b id="statNetwork">
+                        —
+                    </b>
+
                 </div>
 
             </div>
@@ -299,8 +338,9 @@
         </div>
 
 
+
         <!-- ====================================================
-             ACTIVITY
+             SERVER INFORMATION
              ==================================================== -->
 
         <div class="activity-panel">
@@ -308,16 +348,183 @@
             <div class="activity-title">
 
                 <div>
+
+                    <span class="eyebrow">
+                        SERVER INFORMATION
+                    </span>
+
+                    <h2>
+                        Linux Server
+                    </h2>
+
+                </div>
+
+
+                <span
+                    class="activity-live"
+                    id="serverInfoStatus"
+                >
+                    LIVE
+                </span>
+
+            </div>
+
+
+
+            <div
+                class="activity-feed"
+                id="serverInfo"
+            >
+
+                <div class="activity-row">
+
+                    <span class="activity-time">
+                        HOST
+                    </span>
+
+                    <span class="activity-point ok"></span>
+
+                    <span>
+                        Hostname
+                    </span>
+
+                    <b id="infoHostname">
+                        —
+                    </b>
+
+                </div>
+
+
+
+                <div class="activity-row">
+
+                    <span class="activity-time">
+                        OS
+                    </span>
+
+                    <span class="activity-point"></span>
+
+                    <span>
+                        Operating System
+                    </span>
+
+                    <b id="infoOs">
+                        —
+                    </b>
+
+                </div>
+
+
+
+                <div class="activity-row">
+
+                    <span class="activity-time">
+                        KERNEL
+                    </span>
+
+                    <span class="activity-point"></span>
+
+                    <span>
+                        Linux Kernel
+                    </span>
+
+                    <b id="infoKernel">
+                        —
+                    </b>
+
+                </div>
+
+
+
+                <div class="activity-row">
+
+                    <span class="activity-time">
+                        CPU
+                    </span>
+
+                    <span class="activity-point"></span>
+
+                    <span>
+                        Processor
+                    </span>
+
+                    <b id="infoCpu">
+                        —
+                    </b>
+
+                </div>
+
+
+
+                <div class="activity-row">
+
+                    <span class="activity-time">
+                        LOAD
+                    </span>
+
+                    <span class="activity-point"></span>
+
+                    <span>
+                        System Load
+                    </span>
+
+                    <b id="infoLoad">
+                        —
+                    </b>
+
+                </div>
+
+
+
+                <div class="activity-row">
+
+                    <span class="activity-time">
+                        PROCESSES
+                    </span>
+
+                    <span class="activity-point"></span>
+
+                    <span>
+                        Running Processes
+                    </span>
+
+                    <b id="infoProcesses">
+                        —
+                    </b>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ====================================================
+             LIVE ACTIVITY
+             ==================================================== -->
+
+        <div class="activity-panel">
+
+            <div class="activity-title">
+
+                <div>
+
                     <span class="eyebrow">
                         LIVE EVENTS
                     </span>
 
                     <h2>
-                        Network Activity
+                        Server Activity
                     </h2>
+
                 </div>
 
-                <span class="activity-live">
+
+                <span
+                    class="activity-live"
+                    id="activityLive"
+                >
                     LIVE
                 </span>
 
@@ -331,56 +538,21 @@
 
                 <div class="activity-row">
 
-                    <span class="activity-time">
-                        14:32:08
+                    <span
+                        class="activity-time"
+                        id="activityTime"
+                    >
+                        --:--:--
                     </span>
 
                     <span class="activity-point ok"></span>
 
-                    <span>
-                        Secure connection established
+                    <span id="activityMessage">
+                        Ожидание данных сервера
                     </span>
 
-                    <b>
-                        Kyiv → Frankfurt
-                    </b>
-
-                </div>
-
-
-                <div class="activity-row">
-
-                    <span class="activity-time">
-                        14:31:54
-                    </span>
-
-                    <span class="activity-point"></span>
-
-                    <span>
-                        Server heartbeat received
-                    </span>
-
-                    <b>
-                        Warsaw
-                    </b>
-
-                </div>
-
-
-                <div class="activity-row">
-
-                    <span class="activity-time">
-                        14:31:37
-                    </span>
-
-                    <span class="activity-point ok"></span>
-
-                    <span>
-                        SSH protection active
-                    </span>
-
-                    <b>
-                        London
+                    <b id="activityServer">
+                        ServerGuard
                     </b>
 
                 </div>
@@ -426,7 +598,888 @@
 
 
 
+<script src="js/land-data.js"></script>
+
 <script src="core/core.js"></script>
+
+
+
+<!-- ============================================================
+     SERVER API
+     ============================================================ -->
+
+<script>
+
+(function ()
+{
+
+    "use strict";
+
+
+    const API_URL = "/api/server/stats";
+
+
+    let lastServerData = null;
+
+
+    function getElement(id)
+    {
+        return document.getElementById(id);
+    }
+
+
+    function setText(id, value)
+    {
+        const element = getElement(id);
+
+        if (element)
+        {
+            element.textContent =
+                value === undefined ||
+                value === null ||
+                value === ""
+                    ? "—"
+                    : String(value);
+        }
+    }
+
+
+    /*
+     * ============================================================
+     * FORMAT BYTES
+     * ============================================================
+     */
+
+    function formatBytes(bytes)
+    {
+        const value =
+            Number(bytes);
+
+        if (
+            !Number.isFinite(value) ||
+            value < 0
+        )
+        {
+            return "—";
+        }
+
+
+        if (value < 1024)
+        {
+            return (
+                value.toFixed(0) +
+                " B"
+            );
+        }
+
+
+        if (value < 1024 * 1024)
+        {
+            return (
+                value / 1024
+            ).toFixed(1) + " KB";
+        }
+
+
+        if (value < 1024 * 1024 * 1024)
+        {
+            return (
+                value / (1024 * 1024)
+            ).toFixed(1) + " MB";
+        }
+
+
+        if (value < 1024 * 1024 * 1024 * 1024)
+        {
+            return (
+                value / (1024 * 1024 * 1024)
+            ).toFixed(1) + " GB";
+        }
+
+
+        return (
+            value / (1024 * 1024 * 1024 * 1024)
+        ).toFixed(1) + " TB";
+    }
+
+
+    /*
+     * ============================================================
+     * FORMAT SPEED
+     * ============================================================
+     *
+     * Backend returns bytes per second.
+     *
+     */
+
+    function formatSpeed(bytesPerSecond)
+    {
+        const value =
+            Number(bytesPerSecond);
+
+        if (
+            !Number.isFinite(value) ||
+            value < 0
+        )
+        {
+            return "0 B/s";
+        }
+
+
+        if (value < 1024)
+        {
+            return (
+                value.toFixed(0) +
+                " B/s"
+            );
+        }
+
+
+        if (value < 1024 * 1024)
+        {
+            return (
+                value / 1024
+            ).toFixed(1) + " KB/s";
+        }
+
+
+        if (value < 1024 * 1024 * 1024)
+        {
+            return (
+                value / (1024 * 1024)
+            ).toFixed(1) + " MB/s";
+        }
+
+
+        if (value < 1024 * 1024 * 1024 * 1024)
+        {
+            return (
+                value / (1024 * 1024 * 1024)
+            ).toFixed(1) + " GB/s";
+        }
+
+
+        return (
+            value / (1024 * 1024 * 1024 * 1024)
+        ).toFixed(1) + " TB/s";
+    }
+
+
+    /*
+     * ============================================================
+     * FORMAT UPTIME
+     * ============================================================
+     */
+
+    function formatUptime(seconds)
+    {
+        const value =
+            Number(seconds);
+
+
+        if (
+            !Number.isFinite(value) ||
+            value < 0
+        )
+        {
+            return "—";
+        }
+
+
+        const days =
+            Math.floor(
+                value / 86400
+            );
+
+
+        const hours =
+            Math.floor(
+                (value % 86400) / 3600
+            );
+
+
+        const minutes =
+            Math.floor(
+                (value % 3600) / 60
+            );
+
+
+        if (days > 0)
+        {
+            return (
+                days +
+                "d " +
+                hours +
+                "h"
+            );
+        }
+
+
+        if (hours > 0)
+        {
+            return (
+                hours +
+                "h " +
+                minutes +
+                "m"
+            );
+        }
+
+
+        return minutes + "m";
+    }
+
+
+    /*
+     * ============================================================
+     * CONNECTED
+     * ============================================================
+     */
+
+    function setConnected(data)
+    {
+
+        const dot =
+            getElement("connDot");
+
+
+        const text =
+            getElement("connText");
+
+
+        if (dot)
+        {
+            dot.classList.add("online");
+        }
+
+
+        if (text)
+        {
+            text.textContent =
+                "сервер подключён";
+        }
+
+
+        setText(
+            "serverStatus",
+            "NETWORK ONLINE"
+        );
+
+
+        setText(
+            "serverStatusText",
+            "Real-time monitoring"
+        );
+
+
+        setText(
+            "serverInfoStatus",
+            "LIVE"
+        );
+
+
+        setText(
+            "activityLive",
+            "LIVE"
+        );
+
+
+        setText(
+            "planetServerStatus",
+            "PROTECTED"
+        );
+
+
+        const liveDot =
+            getElement("serverLiveDot");
+
+
+        if (liveDot)
+        {
+            liveDot.classList.add("online");
+        }
+
+    }
+
+
+    /*
+     * ============================================================
+     * DISCONNECTED
+     * ============================================================
+     */
+
+    function setDisconnected()
+    {
+
+        const dot =
+            getElement("connDot");
+
+
+        const text =
+            getElement("connText");
+
+
+        if (dot)
+        {
+            dot.classList.remove("online");
+        }
+
+
+        if (text)
+        {
+            text.textContent =
+                "сервер недоступен";
+        }
+
+
+        setText(
+            "serverStatus",
+            "OFFLINE"
+        );
+
+
+        setText(
+            "serverStatusText",
+            "Connection unavailable"
+        );
+
+
+        setText(
+            "serverInfoStatus",
+            "OFFLINE"
+        );
+
+
+        setText(
+            "activityLive",
+            "OFFLINE"
+        );
+
+
+        setText(
+            "planetServerStatus",
+            "OFFLINE"
+        );
+
+
+        const liveDot =
+            getElement("serverLiveDot");
+
+
+        if (liveDot)
+        {
+            liveDot.classList.remove("online");
+        }
+
+    }
+
+
+    /*
+     * ============================================================
+     * UPDATE SERVER
+     * ============================================================
+     */
+
+    function updateServer(data)
+    {
+
+        lastServerData =
+            data;
+
+
+        setConnected(data);
+
+
+        /*
+         * --------------------------------------------------------
+         * HOSTNAME
+         * --------------------------------------------------------
+         */
+
+        const hostname =
+            data.hostname ||
+            data.host ||
+            data.name ||
+            "Linux Server";
+
+
+        const title =
+            getElement("serverTitle");
+
+
+        if (title)
+        {
+            title.innerHTML =
+                "Linux <span>" +
+                hostname +
+                "</span>";
+        }
+
+
+        setText(
+            "planetServerName",
+            hostname
+        );
+
+
+        setText(
+            "infoHostname",
+            hostname
+        );
+
+
+        setText(
+            "tooltipName",
+            hostname
+        );
+
+
+        /*
+         * --------------------------------------------------------
+         * CPU
+         * --------------------------------------------------------
+         */
+
+        let cpu =
+            data.cpu_percent;
+
+
+        if (
+            cpu === undefined
+        )
+        {
+            cpu =
+                data.cpu;
+        }
+
+
+        if (
+            typeof cpu === "number"
+        )
+        {
+            cpu =
+                cpu.toFixed(1) +
+                "%";
+        }
+
+
+        setText(
+            "statCpu",
+            cpu
+        );
+
+
+        setText(
+            "infoCpu",
+            data.cpu_model ||
+            data.cpu_name ||
+            data.processor ||
+            "—"
+        );
+
+
+        /*
+         * --------------------------------------------------------
+         * MEMORY
+         * --------------------------------------------------------
+         */
+
+        let memory =
+            data.memory_percent;
+
+
+        if (
+            memory === undefined
+        )
+        {
+            memory =
+                data.mem_percent;
+        }
+
+
+        if (
+            typeof memory === "number"
+        )
+        {
+            memory =
+                memory.toFixed(1) +
+                "%";
+        }
+
+
+        setText(
+            "statMemory",
+            memory
+        );
+
+
+        /*
+         * --------------------------------------------------------
+         * DISK
+         * --------------------------------------------------------
+         */
+
+        let disk =
+            data.disk_percent;
+
+
+        if (
+            disk === undefined
+        )
+        {
+            disk =
+                data.disk;
+        }
+
+
+        if (
+            typeof disk === "number"
+        )
+        {
+            disk =
+                disk.toFixed(1) +
+                "%";
+        }
+
+
+        setText(
+            "statDisk",
+            disk
+        );
+
+
+        /*
+         * --------------------------------------------------------
+         * UPTIME
+         * --------------------------------------------------------
+         */
+
+        let uptime =
+            data.uptime;
+
+
+        if (
+            typeof uptime === "number"
+        )
+        {
+            uptime =
+                formatUptime(uptime);
+        }
+
+
+        setText(
+            "statUptime",
+            uptime
+        );
+
+
+        /*
+         * --------------------------------------------------------
+         * NETWORK SPEED
+         * --------------------------------------------------------
+         *
+         * Backend:
+         *
+         * network_rx_speed
+         * network_tx_speed
+         *
+         * Values are bytes per second.
+         *
+         */
+
+        const rxSpeed =
+            data.network_rx_speed;
+
+
+        const txSpeed =
+            data.network_tx_speed;
+
+
+        if (
+            rxSpeed !== undefined ||
+            txSpeed !== undefined
+        )
+        {
+
+            const download =
+                formatSpeed(
+                    rxSpeed || 0
+                );
+
+
+            const upload =
+                formatSpeed(
+                    txSpeed || 0
+                );
+
+
+            setText(
+                "statNetwork",
+                "↓ " +
+                download +
+                " ↑ " +
+                upload
+            );
+
+        }
+        else
+        {
+
+            /*
+             * Fallback for old backend.
+             */
+
+            let network =
+                data.network;
+
+
+            if (
+                network === undefined
+            )
+            {
+                network =
+                    data.network_total;
+            }
+
+
+            if (
+                typeof network === "number"
+            )
+            {
+                network =
+                    formatBytes(network);
+            }
+
+
+            setText(
+                "statNetwork",
+                network
+            );
+
+        }
+
+
+        /*
+         * --------------------------------------------------------
+         * OS
+         * --------------------------------------------------------
+         */
+
+        setText(
+            "infoOs",
+            data.os ||
+            data.operating_system ||
+            data.platform ||
+            "Linux"
+        );
+
+
+        /*
+         * --------------------------------------------------------
+         * KERNEL
+         * --------------------------------------------------------
+         */
+
+        setText(
+            "infoKernel",
+            data.kernel ||
+            data.kernel_version ||
+            "—"
+        );
+
+
+        /*
+         * --------------------------------------------------------
+         * LOAD
+         * --------------------------------------------------------
+         */
+
+        let load =
+            data.load1;
+
+
+        if (
+            load === undefined ||
+            load === null
+        )
+        {
+            load =
+                data.load;
+        }
+
+
+        if (
+            load === undefined ||
+            load === null
+        )
+        {
+            load =
+                data.load_average;
+        }
+
+
+        if (
+            typeof load === "number"
+        )
+        {
+            load =
+                load.toFixed(2);
+        }
+
+
+        setText(
+            "infoLoad",
+            load
+        );
+
+
+        /*
+         * --------------------------------------------------------
+         * PROCESSES
+         * --------------------------------------------------------
+         */
+
+        let processes =
+            data.processes;
+
+
+        if (
+            processes === undefined ||
+            processes === null
+        )
+        {
+            processes =
+                data.process_count;
+        }
+
+
+        setText(
+            "infoProcesses",
+            processes
+        );
+
+
+        /*
+         * --------------------------------------------------------
+         * ACTIVITY
+         * --------------------------------------------------------
+         */
+
+        const now =
+            new Date();
+
+
+        const time =
+            now.toLocaleTimeString(
+                "ru-RU",
+                {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit"
+                }
+            );
+
+
+        setText(
+            "activityTime",
+            time
+        );
+
+
+        setText(
+            "activityMessage",
+            "Server heartbeat received"
+        );
+
+
+        setText(
+            "activityServer",
+            hostname
+        );
+
+    }
+
+
+    /*
+     * ============================================================
+     * LOAD SERVER STATS
+     * ============================================================
+     */
+
+    async function loadServerStats()
+    {
+
+        try
+        {
+
+            const response =
+                await fetch(
+                    API_URL,
+                    {
+                        method: "GET",
+                        cache: "no-store",
+                        credentials: "same-origin"
+                    }
+                );
+
+
+            if (!response.ok)
+            {
+                throw new Error(
+                    "HTTP " +
+                    response.status
+                );
+            }
+
+
+            const data =
+                await response.json();
+
+
+            updateServer(data);
+
+        }
+        catch (error)
+        {
+
+            console.error(
+                "[ServerGuard] Server stats error:",
+                error
+            );
+
+
+            setDisconnected();
+
+        }
+
+    }
+
+
+    /*
+     * ============================================================
+     * FIRST REQUEST
+     * ============================================================
+     */
+
+    loadServerStats();
+
+
+    /*
+     * ============================================================
+     * UPDATE EVERY 3 SECONDS
+     * ============================================================
+     */
+
+    setInterval(
+        loadServerStats,
+        3000
+    );
+
+
+})();
+
+</script>
+
 
 </body>
 
