@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <meta
+        name="theme-color"
+        content="#050911"
+    >
+
+    <title>ServerGuard</title>
+
+    <link rel="stylesheet" href="core/core.css">
+
+</head>
+
+<body>
+
+
+<!-- ============================================================
+     SIDEBAR
+     ============================================================ -->
+
+<aside>
+
+    <div class="brand">
+        <span class="brand-mark">S</span>
+
+        <span class="brand-name">
+            ServerGuard
+        </span>
+    </div>
+
+
+    <div class="brand-subtitle">
+        Linux Security Platform
+    </div>
+
+
+    <div class="conn">
+
+        <span
+            class="dot"
+            id="connDot"
+        ></span>
+
+        <span id="connText">
+            проверка…
+        </span>
+
+    </div>
+
+
+    <!-- Навигация строится core.js -->
+
+    <nav id="nav"></nav>
+
+
+    <div class="sidebar-bottom">
+
+        <div class="sidebar-status">
+
+            <span class="status-pulse"></span>
+
+            <div>
+                <b>Protection</b>
+                <small>ServerGuard Core</small>
+            </div>
+
+        </div>
+
+        <div class="version">
+            SERVERGUARD // WEB
+        </div>
+
+    </div>
+
+</aside>
+
+
+
+<!-- ============================================================
+     MAIN
+     ============================================================ -->
+
+<main id="main">
+
+    <div
+        class="banner"
+        id="banner"
+    ></div>
+
+
+    <!-- ========================================================
+         MAIN WORLD DASHBOARD
+         ======================================================== -->
+
+    <section
+        class="world-dashboard"
+        id="worldDashboard"
+        data-module="overview"
+    >
+
+
+        <!-- BACKGROUND EFFECTS -->
+
+        <div class="world-noise"></div>
+
+        <div class="world-grid"></div>
+
+
+
+        <!-- ====================================================
+             TOP HEADER
+             ==================================================== -->
+
+        <header class="world-header">
+
+            <div>
+
+                <div class="eyebrow">
+                    SERVERGUARD NETWORK
+                </div>
+
+                <h1>
+                    Global
+                    <span>Protection</span>
+                </h1>
+
+                <p>
+                    Визуальный мониторинг защищённых
+                    Linux-серверов и соединений.
+                </p>
+
+            </div>
+
+
+            <div class="world-live">
+
+                <span class="live-dot"></span>
+
+                <div>
+                    <b>NETWORK ONLINE</b>
+                    <small>Real-time monitoring</small>
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ====================================================
+             WORLD
+             ==================================================== -->
+
+        <div class="world-stage">
+
+
+            <!-- атмосфера -->
+
+            <div class="planet-glow"></div>
+
+
+            <!-- canvas -->
+
+            <canvas
+                id="worldCanvas"
+            ></canvas>
+
+
+            <!-- центр -->
+
+            <div class="planet-center">
+
+                <div class="planet-center-ring"></div>
+
+                <div class="planet-center-content">
+
+                    <span class="planet-label">
+                        SERVERGUARD
+                    </span>
+
+                    <strong>
+                        GLOBAL
+                    </strong>
+
+                    <small>
+                        PROTECTION NETWORK
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- floating info -->
+
+            <div class="world-card world-card-top">
+
+                <span class="world-card-label">
+                    PROTECTED SERVERS
+                </span>
+
+                <strong id="worldServers">
+                    12
+                </strong>
+
+                <small>
+                    worldwide
+                </small>
+
+            </div>
+
+
+            <div class="world-card world-card-left">
+
+                <span class="world-card-label">
+                    ACTIVE LINKS
+                </span>
+
+                <strong id="worldLinks">
+                    28
+                </strong>
+
+                <small>
+                    encrypted channels
+                </small>
+
+            </div>
+
+
+            <div class="world-card world-card-right">
+
+                <span class="world-card-label">
+                    TRAFFIC
+                </span>
+
+                <strong id="worldTraffic">
+                    4.82
+                    <small>GB/s</small>
+                </strong>
+
+                <small>
+                    protected traffic
+                </small>
+
+            </div>
+
+
+            <div class="world-card world-card-bottom">
+
+                <span class="world-card-label">
+                    THREATS BLOCKED
+                </span>
+
+                <strong id="worldThreats">
+                    1,284
+                </strong>
+
+                <small>
+                    last 24 hours
+                </small>
+
+            </div>
+
+
+            <!-- hover information -->
+
+            <div
+                class="node-tooltip"
+                id="nodeTooltip"
+            >
+
+                <div class="tooltip-line"></div>
+
+                <span id="tooltipCity">
+                    Kyiv
+                </span>
+
+                <strong id="tooltipName">
+                    ServerGuard Node
+                </strong>
+
+                <small id="tooltipStatus">
+                    Protected
+                </small>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ====================================================
+             BOTTOM STATS
+             ==================================================== -->
+
+        <div class="network-strip">
+
+
+            <div class="network-item">
+
+                <span class="network-icon online"></span>
+
+                <div>
+                    <small>NETWORK</small>
+                    <b>Operational</b>
+                </div>
+
+            </div>
+
+
+            <div class="network-item">
+
+                <span class="network-icon"></span>
+
+                <div>
+                    <small>ENCRYPTION</small>
+                    <b>SSH / Secure</b>
+                </div>
+
+            </div>
+
+
+            <div class="network-item">
+
+                <span class="network-icon"></span>
+
+                <div>
+                    <small>FIREWALL</small>
+                    <b>Active</b>
+                </div>
+
+            </div>
+
+
+            <div class="network-item">
+
+                <span class="network-icon"></span>
+
+                <div>
+                    <small>FILEGUARD</small>
+                    <b>Monitoring</b>
+                </div>
+
+            </div>
+
+
+            <div class="network-item">
+
+                <span class="network-icon"></span>
+
+                <div>
+                    <small>SSH HARDENING</small>
+                    <b>Enabled</b>
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ====================================================
+             ACTIVITY
+             ==================================================== -->
+
+        <div class="activity-panel">
+
+            <div class="activity-title">
+
+                <div>
+                    <span class="eyebrow">
+                        LIVE EVENTS
+                    </span>
+
+                    <h2>
+                        Network Activity
+                    </h2>
+                </div>
+
+                <span class="activity-live">
+                    LIVE
+                </span>
+
+            </div>
+
+
+            <div
+                class="activity-feed"
+                id="activityFeed"
+            >
+
+                <div class="activity-row">
+
+                    <span class="activity-time">
+                        14:32:08
+                    </span>
+
+                    <span class="activity-point ok"></span>
+
+                    <span>
+                        Secure connection established
+                    </span>
+
+                    <b>
+                        Kyiv → Frankfurt
+                    </b>
+
+                </div>
+
+
+                <div class="activity-row">
+
+                    <span class="activity-time">
+                        14:31:54
+                    </span>
+
+                    <span class="activity-point"></span>
+
+                    <span>
+                        Server heartbeat received
+                    </span>
+
+                    <b>
+                        Warsaw
+                    </b>
+
+                </div>
+
+
+                <div class="activity-row">
+
+                    <span class="activity-time">
+                        14:31:37
+                    </span>
+
+                    <span class="activity-point ok"></span>
+
+                    <span>
+                        SSH protection active
+                    </span>
+
+                    <b>
+                        London
+                    </b>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- ============================================================
+     CONFIRM DIALOG
+     ============================================================ -->
+
+<dialog id="dlg">
+
+    <b id="dlgTitle"></b>
+
+    <p id="dlgText"></p>
+
+    <div class="row">
+
+        <button id="dlgNo">
+            Отмена
+        </button>
+
+        <button
+            class="go"
+            id="dlgYes"
+        >
+            Подтвердить
+        </button>
+
+    </div>
+
+</dialog>
+
+
+
+<script src="core/core.js"></script>
+
+</body>
+
+</html>
