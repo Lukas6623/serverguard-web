@@ -1,0 +1,104 @@
+<!-- ============================================================
+     MODULE: SECURITY
+     ============================================================ -->
+
+<section id="view-security" data-module="security" hidden>
+
+    <header class="top">
+
+        <div>
+
+            <h1>
+                Security
+            </h1>
+
+            <div class="sub">
+                Защита SSH от brute-force атак и управление UFW
+            </div>
+
+        </div>
+
+        <div class="tools">
+
+            <span class="spin" id="securitySpin"></span>
+
+            <label>
+
+                <input type="checkbox" id="securityAuto" checked>
+
+                обновлять статус (15 с)
+
+            </label>
+
+            <button class="btn" id="securityRefreshBtn" style="padding:6px 12px">
+                Обновить
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <div class="grid" id="securityStats"></div>
+
+
+    <div class="section">
+
+        <h2>
+            Информация
+        </h2>
+
+        <div class="info-grid" id="securityInfo"></div>
+
+    </div>
+
+
+    <div class="section">
+
+        <h2>
+            Управление защитой
+        </h2>
+
+        <div class="actions" id="securityActions"></div>
+
+    </div>
+
+
+    <div class="section">
+
+        <h2>
+            Логи Security
+        </h2>
+
+        <div class="tabs">
+
+            <span class="sp"></span>
+
+            <button id="securityLogsBtn">
+                Загрузить
+            </button>
+
+        </div>
+
+        <pre id="securityOut">Нажмите «Загрузить», чтобы получить логи Security.</pre>
+
+    </div>
+
+
+    <div class="section">
+
+        <h2>
+            Журнал действий
+        </h2>
+
+        <ul class="log" id="securityLog">
+
+            <li>
+                <span class="sub">Пока пусто</span>
+            </li>
+
+        </ul>
+
+    </div>
+
+</section>
