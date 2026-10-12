@@ -1,0 +1,168 @@
+/* ============================================================
+   MODULE: FILEGUARD — стили
+   Все селекторы под .fg-module, с core.css не конфликтуют.
+   Тема: светлая/тёмная по prefers-color-scheme, либо принудительно
+   через [data-theme="dark"|"light"] на любом родителе.
+   ============================================================ */
+
+.fg-module {
+  /* берём переменные core.css, с запасными значениями */
+  --fg-bg: var(--panel2, #0d1724);
+  --fg-panel: var(--panel, #09111c);
+  --fg-ink: var(--text, #edf7ff);
+  --fg-muted: var(--dim, #71859a);
+  --fg-line: var(--line, rgba(120, 170, 210, .13));
+  --fg-accent: var(--accent, #51e6ff);
+  --fg-accent-ink: #00141b;
+  --fg-crit: var(--bad, #ff5f70);
+  --fg-high: var(--warn, #ffc857);
+  --fg-med: #8da0b3;
+  --fg-ok: var(--ok, #43f5ad);
+  --fg-off: var(--warn, #ffc857);
+  --fg-mono: var(--mono, Consolas, "Cascadia Mono", monospace);
+
+  position: relative;
+  z-index: 10;
+  min-height: 100%;
+  padding: 32px clamp(20px, 4vw, 55px) 50px;
+  color: var(--fg-ink);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.fg-module[hidden] { display: none !important; }
+
+.fg-module *, .fg-module *::before, .fg-module *::after { box-sizing: border-box; }
+.fg-module .fg-hidden { display: none !important; }
+.fg-module .fg-spacer { flex: 1; }
+.fg-module .fg-mono { font-family: var(--fg-mono); }
+
+/* ---------- header ---------- */
+.fg-head { margin-bottom: 18px; }
+.fg-title { font-size: 26px; margin: 0; letter-spacing: -0.01em; }
+.fg-sub { color: var(--fg-muted); font-size: 14px; margin: 2px 0 0; }
+
+/* ---------- status ---------- */
+.fg-status {
+  display: grid; grid-template-columns: 1.3fr repeat(3, 1fr);
+  background: var(--fg-panel); border: 1px solid var(--fg-line);
+  border-radius: 6px; overflow: hidden;
+}
+.fg-stat { padding: 14px 18px; border-left: 1px solid var(--fg-line); }
+.fg-stat:first-child { border-left: 0; }
+.fg-k { font-size: 13px; color: var(--fg-muted); }
+.fg-v { font-size: 20px; font-weight: 600; margin-top: 2px; }
+.fg-state { display: flex; align-items: center; gap: 12px; }
+.fg-state .fg-v { margin-top: 0; }
+.fg-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--fg-muted); flex: none; }
+.fg-dot.on { background: var(--fg-ok); box-shadow: 0 0 0 5px color-mix(in srgb, var(--fg-ok) 22%, transparent); }
+.fg-dot.off { background: var(--fg-off); }
+.fg-dot.bad { background: var(--fg-crit); }
+
+/* ---------- buttons / inputs ---------- */
+.fg-controls { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 26px; }
+.fg-module .fg-btn {
+  font: inherit; cursor: pointer;
+  padding: 7px 14px; border-radius: 5px;
+  border: 1px solid var(--fg-line); background: var(--fg-panel); color: var(--fg-ink);
+}
+.fg-module .fg-btn:hover:not(:disabled) { border-color: var(--fg-accent); }
+.fg-module .fg-btn:disabled { opacity: .5; cursor: default; }
+.fg-module .fg-primary { background: var(--fg-accent); color: var(--fg-accent-ink); border-color: var(--fg-accent); }
+.fg-module .fg-danger { color: var(--fg-crit); }
+.fg-module .fg-danger:hover:not(:disabled) { border-color: var(--fg-crit); }
+.fg-module button:focus-visible,
+.fg-module input:focus-visible,
+.fg-module select:focus-visible,
+.fg-module summary:focus-visible { outline: 2px solid var(--fg-accent); outline-offset: 2px; }
+
+.fg-module .fg-input {
+  font: inherit; padding: 7px 10px; border-radius: 5px;
+  border: 1px solid var(--fg-line); background: var(--fg-panel); color: var(--fg-ink);
+}
+.fg-search { min-width: 240px; flex: 1; max-width: 420px; }
+.fg-auto { color: var(--fg-muted); font-size: 14px; display: flex; gap: 6px; align-items: center; }
+
+/* ---------- tabs ---------- */
+.fg-tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--fg-line); }
+.fg-module .fg-tab {
+  font: inherit; cursor: pointer;
+  border: 0; border-bottom: 3px solid transparent; border-radius: 0;
+  background: transparent; padding: 9px 16px; color: var(--fg-muted);
+}
+.fg-module .fg-tab[aria-selected="true"] { color: var(--fg-ink); border-bottom-color: var(--fg-accent); font-weight: 600; }
+
+.fg-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 14px 0; }
+.fg-chips { display: flex; gap: 6px; }
+.fg-module .fg-chip {
+  font: inherit; font-size: 13px; cursor: pointer;
+  padding: 4px 12px; border-radius: 999px;
+  border: 1px solid var(--fg-line); background: var(--fg-panel); color: var(--fg-ink);
+}
+.fg-module .fg-chip[aria-pressed="true"] { background: var(--fg-ink); color: var(--fg-bg); border-color: var(--fg-ink); }
+.fg-chip b { font-weight: 600; margin-left: 6px; }
+
+/* ---------- events ---------- */
+.fg-list { background: var(--fg-panel); border: 1px solid var(--fg-line); border-radius: 6px; overflow: hidden; }
+.fg-row { border-top: 1px solid var(--fg-line); }
+.fg-row:first-child { border-top: 0; }
+.fg-row > summary {
+  display: grid; grid-template-columns: 170px 92px 150px 1fr;
+  gap: 12px; align-items: center; padding: 10px 16px;
+  cursor: pointer; list-style: none;
+}
+.fg-row > summary::-webkit-details-marker { display: none; }
+.fg-row > summary:hover { background: color-mix(in srgb, var(--fg-accent) 7%, transparent); }
+.fg-row[open] > summary { background: color-mix(in srgb, var(--fg-accent) 10%, transparent); }
+.fg-time { color: var(--fg-muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.fg-path { font-family: var(--fg-mono); font-size: 13px; word-break: break-all; }
+.fg-sev { font-size: 13px; font-weight: 600; }
+.fg-sev::before { content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 2px; background: currentColor; margin-right: 7px; }
+.fg-sev.CRITICAL { color: var(--fg-crit); }
+.fg-sev.HIGH { color: var(--fg-high); }
+.fg-sev.MEDIUM { color: var(--fg-med); }
+
+.fg-detail { padding: 4px 16px 16px; }
+.fg-diff { border-collapse: collapse; width: 100%; font-size: 13px; }
+.fg-diff th, .fg-diff td { text-align: left; padding: 5px 10px; border-bottom: 1px solid var(--fg-line); vertical-align: top; }
+.fg-diff th { color: var(--fg-muted); font-weight: 500; width: 130px; }
+.fg-diff td { font-family: var(--fg-mono); word-break: break-all; }
+.fg-was { color: var(--fg-crit); }
+.fg-now { color: var(--fg-ok); }
+.fg-nodiff { color: var(--fg-muted); font-size: 14px; padding: 6px 0; }
+
+/* ---------- baseline ---------- */
+.fg-scroll { overflow: auto; max-height: 640px; border-radius: 6px; border: 1px solid var(--fg-line); }
+.fg-base { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--fg-panel); }
+.fg-base th, .fg-base td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--fg-line); }
+.fg-base th { color: var(--fg-muted); font-weight: 500; background: var(--fg-bg); position: sticky; top: 0; }
+.fg-base td.fg-mono { word-break: break-all; }
+.fg-drift { color: var(--fg-crit); font-weight: 600; }
+
+/* ---------- logs / misc ---------- */
+.fg-logs {
+  background: #0f161d; color: #cfe0ea; padding: 16px; border-radius: 6px;
+  font: 12.5px/1.55 var(--fg-mono); max-height: 640px; overflow: auto; white-space: pre-wrap; margin: 14px 0 0;
+}
+.fg-empty { padding: 36px 20px; text-align: center; color: var(--fg-muted); background: var(--fg-panel); border: 1px solid var(--fg-line); border-radius: 6px; }
+.fg-list .fg-empty { border: 0; }
+.fg-banner {
+  padding: 12px 16px; border-radius: 6px; margin-bottom: 16px;
+  border: 1px solid var(--fg-crit); color: var(--fg-crit);
+  background: color-mix(in srgb, var(--fg-crit) 8%, transparent);
+}
+.fg-toast {
+  position: fixed; right: 16px; bottom: 16px; max-width: 420px; z-index: 1000;
+  padding: 12px 16px; border-radius: 6px; background: var(--fg-ink); color: var(--fg-bg);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .25);
+}
+.fg-toast.fg-err { background: var(--fg-crit); color: #fff; }
+
+@media (max-width: 760px) {
+  .fg-status { grid-template-columns: 1fr 1fr; }
+  .fg-stat { border-top: 1px solid var(--fg-line); }
+  .fg-stat:nth-child(3) { border-left: 0; }
+  .fg-stat-main { grid-column: 1 / -1; border-top: 0; }
+  .fg-row > summary { grid-template-columns: 1fr auto; }
+  .fg-row > summary .fg-path { grid-column: 1 / -1; }
+  .fg-row > summary .fg-type { display: none; }
+}
