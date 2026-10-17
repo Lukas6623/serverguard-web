@@ -1,0 +1,22 @@
+/* ============================================================
+   style.css — стили, СПЕЦИФИЧНЫЕ только для модуля Security.
+
+   .port-list / .port используются только здесь (карточка
+   "SSH порты" в информации о модуле), поэтому вынесены сюда,
+   а не в общий core/core.css.
+   ============================================================ */
+
+.port-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px
+}
+
+.port{
+    padding:5px 10px;
+    border-radius:6px;
+    background:#0d1015;
+    border:1px solid var(--line);
+    font-family:var(--mono);
+    font-size:12px
+}

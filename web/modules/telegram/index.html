@@ -1,0 +1,156 @@
+
+<!-- ============================================================
+     MODULE: TELEGRAM BOT
+     ============================================================ -->
+
+<section id="view-telegram" data-module="telegram" hidden>
+
+    <header class="top">
+
+        <div>
+            <h1>Telegram Bot</h1>
+
+            <div class="sub">
+                Управление Telegram Bot и службой ServerGuard
+            </div>
+        </div>
+
+        <div class="tools">
+
+            <span class="spin" id="telegramSpin"></span>
+
+            <label>
+                <input
+                    type="checkbox"
+                    id="telegramAuto"
+                    checked
+                >
+                обновлять статус (15 с)
+            </label>
+
+            <button
+                class="btn"
+                id="telegramRefreshBtn"
+                style="padding:6px 12px"
+                type="button"
+            >
+                Обновить
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ========================================================
+         STATISTICS
+         ======================================================== -->
+
+    <div class="grid" id="telegramStats"></div>
+
+
+    <!-- ========================================================
+         INFORMATION
+         ======================================================== -->
+
+    <div class="section">
+
+        <h2>Информация</h2>
+
+        <div class="info-grid" id="telegramInfo"></div>
+
+    </div>
+
+
+    <!-- ========================================================
+         MANAGEMENT
+         ======================================================== -->
+
+    <div class="section">
+
+        <h2>Управление Telegram Bot</h2>
+
+        <div
+            class="info-grid"
+            style="margin-bottom:16px"
+        >
+
+            <div class="info-card">
+
+                <label for="telegramToken">
+                    Токен Telegram Bot
+                </label>
+
+                <input
+                    type="password"
+                    id="telegramToken"
+                    placeholder="Токен от @BotFather"
+                    autocomplete="new-password"
+                    autocapitalize="off"
+                    spellcheck="false"
+                    style="width:100%;margin-top:8px"
+                >
+
+                <small>
+                    Вставьте токен, полученный у @BotFather.
+                    Он будет передан серверу при установке бота.
+                    Не публикуйте токен и не отправляйте его посторонним.
+                </small>
+
+            </div>
+
+        </div>
+
+        <div
+            class="actions"
+            id="telegramActions"
+        ></div>
+
+    </div>
+
+
+    <!-- ========================================================
+         LOGS
+         ======================================================== -->
+
+    <div class="section">
+
+        <h2>Логи Telegram</h2>
+
+        <div class="tabs">
+
+            <span class="sp"></span>
+
+            <button
+                id="telegramLogsBtn"
+                type="button"
+            >
+                Загрузить
+            </button>
+
+        </div>
+
+        <pre id="telegramOut">Нажмите «Загрузить», чтобы получить логи Telegram Bot.</pre>
+
+    </div>
+
+
+    <!-- ========================================================
+         ACTION JOURNAL
+         ======================================================== -->
+
+    <div class="section">
+
+        <h2>Журнал действий</h2>
+
+        <ul class="log" id="telegramLog">
+
+            <li>
+                <span class="sub">Пока пусто</span>
+            </li>
+
+        </ul>
+
+    </div>
+
+</section>

@@ -1,0 +1,85 @@
+<!-- ============================================================
+     MODULE: FILEGUARD — разметка
+
+     Корень секции обязан иметь data-module="fileguard" и атрибут
+     hidden: core.js показывает/скрывает модули по [data-module] и
+     строит меню по section[data-module="..."].
+     ============================================================ -->
+
+<section class="fg-module" id="fg-root" data-module="fileguard" hidden aria-label="FileGuard">
+
+  <header class="fg-head">
+    <h1 class="fg-title">FileGuard</h1>
+    <p class="fg-sub">Контроль системных конфигов: /etc/ssh, sudoers, cron, systemd, PAM</p>
+  </header>
+
+  <div class="fg-banner fg-hidden" data-fg="error" role="alert"></div>
+
+  <div class="fg-status" aria-label="Состояние модуля">
+    <div class="fg-stat fg-stat-main">
+      <div class="fg-k">Служба <span class="fg-mono" data-fg="service"></span></div>
+      <div class="fg-state">
+        <span class="fg-dot" data-fg="dot"></span>
+        <span class="fg-v" data-fg="state">Загрузка…</span>
+      </div>
+    </div>
+    <div class="fg-stat"><div class="fg-k">Автозапуск</div><div class="fg-v" data-fg="enabled">—</div></div>
+    <div class="fg-stat"><div class="fg-k">Базовый снимок</div><div class="fg-v" data-fg="baseline">—</div></div>
+    <div class="fg-stat"><div class="fg-k">Событий всего</div><div class="fg-v" data-fg="total">—</div></div>
+  </div>
+
+  <div class="fg-controls">
+    <button type="button" class="fg-btn fg-primary" data-fg-act="start">Запустить</button>
+    <button type="button" class="fg-btn" data-fg-act="stop">Остановить</button>
+    <button type="button" class="fg-btn" data-fg-act="restart">Перезапустить</button>
+    <button type="button" class="fg-btn" data-fg-act="enable">Включить автозапуск</button>
+    <button type="button" class="fg-btn" data-fg-act="disable">Выключить автозапуск</button>
+    <span class="fg-spacer"></span>
+    <button type="button" class="fg-btn fg-danger" data-fg-act="rebuild-baseline">Пересоздать базовый снимок</button>
+    <button type="button" class="fg-btn fg-danger" data-fg-act="clear-events">Очистить журнал событий</button>
+  </div>
+
+  <div class="fg-tabs" role="tablist">
+    <button type="button" class="fg-tab" role="tab" data-fg-tab="events" aria-selected="true">События</button>
+    <button type="button" class="fg-tab" role="tab" data-fg-tab="baseline" aria-selected="false">Файлы под контролем</button>
+    <button type="button" class="fg-tab" role="tab" data-fg-tab="logs" aria-selected="false">Лог службы</button>
+  </div>
+
+  <!-- События -->
+  <div data-fg-pane="events">
+    <div class="fg-bar">
+      <div class="fg-chips" data-fg="chips"></div>
+      <select class="fg-input" data-fg="typeFilter" aria-label="Тип события">
+        <option value="">Все типы</option>
+        <option value="created">Создан</option>
+        <option value="modified">Изменён</option>
+        <option value="deleted">Удалён</option>
+        <option value="permissions_changed">Права изменены</option>
+      </select>
+      <input class="fg-input fg-search" type="search" data-fg="eventSearch" placeholder="Поиск по пути" aria-label="Поиск по пути">
+      <span class="fg-spacer"></span>
+      <label class="fg-auto"><input type="checkbox" data-fg="auto" checked> Обновлять каждые 5 с</label>
+      <button type="button" class="fg-btn" data-fg="refresh">Обновить</button>
+    </div>
+    <div class="fg-list" data-fg="events"></div>
+  </div>
+
+  <!-- Baseline -->
+  <div class="fg-hidden" data-fg-pane="baseline">
+    <div class="fg-bar">
+      <input class="fg-input fg-search" type="search" data-fg="baseSearch" placeholder="Поиск по пути" aria-label="Поиск по пути">
+      <label class="fg-auto"><input type="checkbox" data-fg="onlyDrift"> Только отличающиеся от снимка</label>
+      <span class="fg-spacer"></span>
+      <span class="fg-sub" data-fg="baseCount"></span>
+    </div>
+    <div data-fg="baseline-table"></div>
+  </div>
+
+  <!-- Logs -->
+  <div class="fg-hidden" data-fg-pane="logs">
+    <pre class="fg-logs" data-fg="logs">Загрузка…</pre>
+  </div>
+
+  <div class="fg-toast fg-hidden" data-fg="toast" role="status"></div>
+
+</section>
