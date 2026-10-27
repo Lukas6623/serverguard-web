@@ -1,5 +1,16 @@
 # ServerGuard — веб-интерфейс
 
+Активная версия панели находится в этой папке `web/`. Вложенная копия
+`serverguard-web/` не синхронизировалась: её роль в упаковке приложения
+пока не установлена. Это панель выбранного удалённого Linux-сервера.
+
+Backend и CLI в этом репозитории отсутствуют. `python3 -m http.server
+8765 --bind 127.0.0.1 --directory web` из корня репозитория позволяет
+посмотреть интерфейс, но не предоставляет API: без приложения панель
+показывает OFFLINE и пустые метрики.
+
+[Отчёт об обновлении и проверках](../docs/panel-update.md).
+
 Модульная версия панели ServerGuard. Разметка, стили и логика
 каждого раздела (SSH Key Guard, Security, Telegram Bot, SSH
 Hardening, FileGuard) лежат в отдельной папке — можно менять один
@@ -8,11 +19,14 @@ Hardening, FileGuard) лежат в отдельной папке — можно
 ## Структура
 
 ```
-index.html                — только каркас страницы (сайдбар, main, диалог)
+index.html                — Dashboard, сайдбар, main и диалог
 core/
   core.css                — общий дизайн (переменные, кнопки, статы, вкладки,
                              лог, диалог, .info-grid/.info-card)
-  core.js                 — вся общая инфраструктура:
+  panel.css               — фиолетовая тема, Dashboard и адаптивность модулей
+  dashboard.js            — GET health/stats, единый статус, ручное обновление
+                             и очистка метрик при ошибках
+  core.js                 — общая инфраструктура:
                                * api()            — очередь запросов к серверу
                                * setBusy/isBusy    — глобальный флаг "идёт операция"
                                * banner()          — баннер связи с сервером
@@ -26,12 +40,15 @@ modules/
   security/   index.html, style.css, script.js
   telegram/   index.html, style.css, script.js
   hardening/  index.html, style.css, script.js
-  fileguard/  index.html, style.css, script.js   (заготовка — бэкенда ещё нет)
+  fileguard/  index.html, style.css, script.js   (UI есть, backend не проверен)
 ```
 
 ## Как это работает
 
-1. `index.html` грузит только `core/core.css` и `core/core.js`.
+1. `index.html` загружает `core/core.css`, `core/panel.css`, данные карты,
+   `core/core.js` и `core/dashboard.js`. Скрипты используют `defer`.
+   После загрузки модулей событие `serverguard:ready` запускает GET-запросы
+   Dashboard. Доступность модулей определяется прежним `/api/modules`.
 2. `core.js` по списку `MODULE_MANIFEST` последовательно подгружает
    для каждого модуля его `style.css` (через `<link>`), `index.html`
    (вставляется в `#main`) и `script.js` (через `<script>`).
@@ -81,3 +98,19 @@ DOM (просто скрыты через `hidden`), а `core.js` ищет эл�
 `document.getElementById`. Проще всего — префиксовать все id именем
 модуля (`telegramSpin`, `telegramStats`, …), как это сделано в
 `security`, `telegram` и `hardening`.
+
+## Проверка frontend
+
+```sh
+node tests/panel-state.test.cjs
+```
+
+Команда запускается из корня репозитория. Это изолированные тесты
+состояния с DOM/fetch-заглушками, а не браузерное тестирование
+или проверка настоящего SSH-подключения. Зависимости не требуются.
+
+Dashboard использует только существующие `/api/health`, `/api/modules`
+и `/api/server/stats`, прежние поля и алиасы ответа. ONLINE означает, что
+health и запрос данных успешно завершились и API вернул известные поля;
+без исходников backend это не является независимым подтверждением
+активной SSH-сессии или состояния защиты.
