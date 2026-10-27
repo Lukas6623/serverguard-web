@@ -5,24 +5,24 @@
 
 :root{
 
-    --bg:#03060b;
-    --bg2:#060b13;
+    --bg:#08060f;
+    --bg2:#0d0a17;
 
-    --panel:#09111c;
-    --panel2:#0d1724;
+    --panel:#131022;
+    --panel2:#1b1630;
 
-    --line:rgba(120,170,210,.13);
-    --line-bright:rgba(120,190,230,.28);
+    --line:rgba(180,157,225,.16);
+    --line-bright:rgba(180,157,225,.32);
 
-    --text:#edf7ff;
-    --dim:#71859a;
+    --text:#f1eefb;
+    --dim:#afa6c4;
 
-    --accent:#51e6ff;
-    --accent2:#6677ff;
+    --accent:#8b5cf6;
+    --accent2:#d946ef;
 
-    --ok:#43f5ad;
-    --warn:#ffc857;
-    --bad:#ff5f70;
+    --ok:#74dfb0;
+    --warn:#f0c979;
+    --bad:#ff8d9f;
 
     --sans:"Segoe UI",system-ui,-apple-system,sans-serif;
     --mono:Consolas,"Cascadia Mono",monospace;

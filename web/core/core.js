@@ -405,147 +405,53 @@ let currentModule =
 
 function renderNav()
 {
+    const nav = $("nav");
+    if (!nav) return;
+    const focused = document.activeElement?.dataset.nav;
+    nav.replaceChildren();
 
-    const nav =
-        $("nav");
-
-
-    if (!nav)
-        return;
-
-
-    nav.innerHTML = "";
-
-
-    /* HOME */
-
-    const home =
-        document.createElement(
-            "button"
-        );
-
-
-    home.className =
-        currentModule === "overview"
-            ? "active"
-            : "";
-
-
-    home.innerHTML =
-        "<span>Global Overview</span><small>live</small>";
-
-
-    home.onclick =
-        () =>
-        {
-
-            currentModule =
-                "overview";
-
-
+    function addButton(id, name, available, hint, symbol) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.dataset.nav = id;
+        button.disabled = !available;
+        button.className = currentModule === id ? "active" : "";
+        if (currentModule === id) button.setAttribute("aria-current", "page");
+        const icon = document.createElement("span");
+        icon.className = "nav-icon";
+        icon.textContent = symbol;
+        icon.setAttribute("aria-hidden", "true");
+        const label = document.createElement("span");
+        label.className = "nav-name";
+        label.textContent = name;
+        const status = document.createElement("small");
+        status.textContent = hint;
+        button.append(icon, label, status);
+        button.title = available ? name : name + ": " + hint;
+        button.onclick = () => {
+            currentModule = id;
             showModule();
-
             renderNav();
-
+            const impl = registry[id];
+            if (impl?.onShow) impl.onShow();
         };
+        nav.append(button);
+    }
 
-
-    nav.append(
-        home
-    );
-
-
-
-    /* MODULES */
-
-    MODULE_MANIFEST.forEach(
-        m =>
-        {
-
-            const sectionPresent =
-
-                !!document.querySelector(
-                    'section[data-module="' +
-                    m.id +
-                    '"]'
-                );
-
-
-            const ready =
-
-                !!moduleState[m.id] &&
-                sectionPresent;
-
-
-            const b =
-                document.createElement(
-                    "button"
-                );
-
-
-            b.disabled =
-                !ready;
-
-
-            b.className =
-
-                m.id === currentModule
-                    ? "active"
-                    : "";
-
-
-            b.innerHTML =
-                "<span>" +
-                m.name +
-                "</span>" +
-                "<small></small>";
-
-
-            b.lastChild.textContent =
-                ready
-                    ? ""
-                    : "скоро";
-
-
-            b.onclick =
-                () =>
-                {
-
-                    currentModule =
-                        m.id;
-
-
-                    showModule();
-
-                    renderNav();
-
-
-                    const impl =
-                        registry[m.id];
-
-
-                    if (
-                        impl &&
-                        impl.onShow
-                    )
-                    {
-
-                        impl.onShow();
-
-                    }
-
-                };
-
-
-            nav.append(
-                b
-            );
-
-        }
-    );
-
+    addButton("overview", "Обзор сервера", true, "", "◈");
+    const symbols = ["⌘", "◇", "↗", "▤", "▧"];
+    MODULE_MANIFEST.forEach((module, i) => {
+        const section = document.querySelector('section[data-module="' + module.id + '"]');
+        const assetsReady = !!section && !!registry[module.id];
+        const ready = backendAvailable && !!moduleState[module.id] && assetsReady;
+        const hint = ready ? "" : !backendAvailable ? "нет связи" : !assetsReady ? "ошибка загрузки" : !modulesLoaded ? "ожидание" : "недоступен";
+        addButton(module.id, module.name, ready, hint, symbols[i]);
+    });
+    if (focused) {
+        const next = [...nav.querySelectorAll("button")].find(button => button.dataset.nav === focused);
+        (next && !next.disabled ? next : nav.querySelector("button")).focus({ preventScroll: true });
+    }
 }
-
 
 
 function showModule()
@@ -571,131 +477,79 @@ function showModule()
 
 
 /* ============================================================
-   HEALTH CHECK
+   BACKEND AVAILABILITY / MODULE STATE
+   Health and stats are coordinated by dashboard.js. Health alone
+   never writes the remote-server Online/Offline status.
    ============================================================ */
 
-async function checkHealth()
+let backendAvailable = false;
+let modulesLoaded = false;
+let moduleGeneration = 0;
+let moduleRequest = null;
+
+function syncBackend(available, force = false)
 {
-
-    try
-    {
-
-        const r =
-            await fetch(
-                "/api/health"
-            );
-
-
-        if (
-            r.status === 401
-        )
-        {
-
-            $("connDot")
-                .className =
-                "dot off";
-
-
-            $("connText")
-                .textContent =
-                "нет доступа";
-
-
-            banner(
-                "Нет доступа. Откройте ссылку с токеном из консоли ServerGuard."
-            );
-
-
-            return null;
-
-        }
-
-
-        const d =
-            await r.json();
-
-
-        $("connDot")
-            .className =
-            "dot on";
-
-
-        $("connText")
-            .textContent =
-            "ServerGuard онлайн";
-
-
-        banner("");
-
-
-        return d;
-
-    }
-    catch (e)
-    {
-
-        $("connDot")
-            .className =
-            "dot off";
-
-
-        $("connText")
-            .textContent =
-            "нет связи";
-
-
-        banner(
-            "Нет связи с ServerGuard. Убедитесь, что программа запущена и SSH-сессия открыта."
-        );
-
-
-        return null;
-
-    }
-
-}
-
-
-
-/* ============================================================
-   MODULE STATE
-   ============================================================ */
-
-async function loadModuleState()
-{
-
-    try
-    {
-
-        const r =
-            await fetch(
-                "/api/modules"
-            );
-
-
-        if (!r.ok)
-            throw new Error(
-                "HTTP " +
-                r.status
-            );
-
-
-        moduleState =
-            await r.json();
-
-    }
-    catch (e)
-    {
-
+    if (!available) {
+        backendAvailable = false;
+        modulesLoaded = false;
         moduleState = {};
-
+        moduleGeneration++;
+        moduleRequest = null;
+        currentModule = "overview";
+        showModule();
+        renderNav();
+        return Promise.resolve(false);
     }
-
-
-    renderNav();
-
+    backendAvailable = true;
+    if (moduleRequest) return moduleRequest;
+    if (modulesLoaded && !force) return Promise.resolve(true);
+    const generation = moduleGeneration;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+    const request = (async () => {
+        try {
+            const response = await fetch("/api/modules", {
+                credentials: "same-origin", cache: "no-store", signal: controller.signal
+            });
+            if (!response.ok) throw new Error("HTTP " + response.status);
+            const data = await response.json();
+            if (!data || typeof data !== "object" || Array.isArray(data) || data.error || data.ok === false) {
+                throw new Error("Некорректный ответ списка модулей");
+            }
+            if (generation !== moduleGeneration || !backendAvailable) return false;
+            const previous = moduleState;
+            moduleState = data;
+            modulesLoaded = true;
+            if (currentModule !== "overview" && !moduleState[currentModule]) {
+                currentModule = "overview";
+                showModule();
+            }
+            renderNav();
+            banner("");
+            // Existing initialLoad handlers only read data. Never run module actions here.
+            void Promise.allSettled(MODULE_MANIFEST.filter(module =>
+                moduleState[module.id] && (!previous[module.id] || force)
+            ).map(module => Promise.resolve().then(() => registry[module.id]?.initialLoad?.())));
+            return true;
+        } catch (error) {
+            if (generation !== moduleGeneration || !backendAvailable) return false;
+            moduleState = {};
+            modulesLoaded = false;
+            currentModule = "overview";
+            showModule();
+            renderNav();
+            banner("Не удалось получить список модулей. " +
+                (error.name === "AbortError" ? "Время ожидания истекло." : error.message) +
+                " Повторим при следующем обновлении.");
+            return false;
+        } finally {
+            clearTimeout(timeout);
+            if (generation === moduleGeneration) moduleRequest = null;
+        }
+    })();
+    moduleRequest = request;
+    return request;
 }
-
 
 
 /* ============================================================
@@ -845,6 +699,17 @@ async function loadModuleAssets(id)
     );
 
 
+    showModule();
+    const section = document.querySelector('section[data-module="' + id + '"]');
+    section?.querySelectorAll(".grid, .info-grid, .hardening-grid").forEach(box => {
+        if (box.children.length) return;
+        const placeholder = document.createElement("p");
+        placeholder.className = "module-empty";
+        placeholder.setAttribute("role", "status");
+        placeholder.textContent = "Ожидание данных удалённого сервера…";
+        box.append(placeholder);
+    });
+
     await loadScript(
         base +
         "script.js"
@@ -855,7 +720,7 @@ async function loadModuleAssets(id)
 
 
 /* ============================================================
-   GLOBAL PROTECTED NETWORK GLOBE
+   DECORATIVE NETWORK GLOBE
    ============================================================ */
 
 function initWorld()
@@ -2432,19 +2297,19 @@ function initWorld()
 
         g.addColorStop(
             0,
-            "rgba(90,140,255,.34)"
+            "rgba(139,92,246,.28)"
         );
 
 
         g.addColorStop(
             .25,
-            "rgba(80,110,255,.12)"
+            "rgba(139,92,246,.12)"
         );
 
 
         g.addColorStop(
             1,
-            "rgba(60,90,255,0)"
+            "rgba(139,92,246,0)"
         );
 
 
@@ -2485,19 +2350,19 @@ function initWorld()
 
         g.addColorStop(
             0,
-            "#182848"
+            "#302046"
         );
 
 
         g.addColorStop(
             .6,
-            "#0b1222"
+            "#171025"
         );
 
 
         g.addColorStop(
             1,
-            "#070a13"
+            "#100b1c"
         );
 
 
@@ -2734,7 +2599,7 @@ function initWorld()
                 l.sp,
                 0,
                 64,
-                "#6f9eff",
+                "#b692f8",
                 1,
                 .2
             );
@@ -2764,7 +2629,7 @@ function initWorld()
                 l.sp,
                 t,
                 l.dir > 0
-                    ? "#7ea9ff"
+                    ? "#c5a7ff"
                     : "#58d68d",
                 .16
             );
@@ -2977,7 +2842,7 @@ function initWorld()
 
 
             ctx.strokeStyle =
-                `rgba(126,169,255,${
+                `rgba(182,146,248,${
                     (
                         .35 +
                         s.flash * .6
@@ -3047,7 +2912,7 @@ function initWorld()
             {
 
                 ctx.fillStyle =
-                    `rgba(126,169,255,${
+                    `rgba(182,146,248,${
                         s.flash *
                         .18
                     })`;
@@ -3059,7 +2924,7 @@ function initWorld()
 
 
             ctx.strokeStyle =
-                `rgba(126,169,255,${
+                `rgba(182,146,248,${
                     (
                         1 -
                         ph
@@ -3140,7 +3005,7 @@ function initWorld()
 
 
             ctx.strokeStyle =
-                `rgba(126,190,255,${
+                `rgba(203,160,250,${
                     (
                         1 -
                         age
@@ -3722,6 +3587,22 @@ function initWorld()
        INTERACTION
        ======================================================== */
 
+    canvas.addEventListener("keydown", event => {
+        const steps = { ArrowLeft: -.15, ArrowRight: .15, ArrowUp: -.1, ArrowDown: .1 };
+        if (!(event.key in steps) && event.key !== "Home") return;
+        event.preventDefault();
+        if (event.key === "Home") {
+            yaw = rad(20);
+            tilt = .38;
+        } else if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+            yaw += steps[event.key];
+        } else {
+            tilt = clamp(tilt + steps[event.key], -.7, .9);
+        }
+        velYaw = 0;
+        if (!running) draw(performance.now());
+    });
+
     canvas.addEventListener(
         "pointerdown",
         e =>
@@ -3952,32 +3833,16 @@ function initWorld()
 
 
                 $("tooltipName").textContent =
-                    "ServerGuard Node";
+                    "Декоративная точка";
 
 
                 $("tooltipStatus").textContent =
-                    "● Protected";
+                    "Не отражает состояние защиты";
 
 
-                tooltip.style.left =
-                    (
-                        mouseX +
-                        16
-                    ) +
-                    "px";
-
-
-                tooltip.style.top =
-                    (
-                        mouseY +
-                        16
-                    ) +
-                    "px";
-
-
-                tooltip.classList.add(
-                    "show"
-                );
+                tooltip.classList.add("show");
+                tooltip.style.left = Math.min(mouseX + 12, Math.max(8, W - tooltip.offsetWidth - 8)) + "px";
+                tooltip.style.top = Math.min(mouseY + 12, Math.max(8, H - tooltip.offsetHeight - 8)) + "px";
 
             }
             else
@@ -4115,106 +3980,20 @@ function initWorld()
 
 async function init()
 {
-
-    /*
-       Запускаем новый глобус.
-    */
-
+    renderNav();
     initWorld();
-
-
-
-    /*
-       Загружаем модули последовательно.
-    */
-
-    for (
-        const m of MODULE_MANIFEST
-    )
-    {
-
-        try
-        {
-
-            await loadModuleAssets(
-                m.id
-            );
-
+    for (const module of MODULE_MANIFEST) {
+        try {
+            await loadModuleAssets(module.id);
+        } catch (error) {
+            console.error("Не удалось загрузить модуль '" + module.id + "':", error);
         }
-        catch (e)
-        {
-
-            console.error(
-                "Не удалось загрузить модуль '" +
-                m.id +
-                "':",
-                e
-            );
-
-        }
-
     }
-
-
-
     showModule();
-
-
-
-    if (
-        await checkHealth()
-    )
-    {
-
-        await loadModuleState();
-
-
-        for (
-            const m of MODULE_MANIFEST
-        )
-        {
-
-            const impl =
-                registry[m.id];
-
-
-            if (
-                moduleState[m.id] &&
-                impl &&
-                impl.initialLoad
-            )
-            {
-
-                await impl.initialLoad();
-
-            }
-
-        }
-
-    }
-    else
-    {
-
-        renderNav();
-
-    }
-
-
+    renderNav();
     setBusy(false);
-
+    document.dispatchEvent(new Event("serverguard:ready"));
 }
-
-
-
-/* ============================================================
-   HEALTH REFRESH
-   ============================================================ */
-
-setInterval(
-    checkHealth,
-    10000
-);
-
 
 
 /* ============================================================
@@ -4248,7 +4027,9 @@ return {
 
     ask,
 
-    registerModule
+    registerModule,
+
+    syncBackend
 
 };
 
